@@ -1,5 +1,9 @@
 # Let Me ChatGPT That For You
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-8b5cf6.svg)](LICENSE)
+
+Live: **[lmcgtfy.lol](https://www.lmcgtfy.lol)**
+
 For all those people who find it more convenient to ask you than an AI.
 
 Type the question they asked you, pick an AI (ChatGPT, Claude, Perplexity, Grok, Copilot, or Google AI Mode), get a link. When they open it, a fake cursor types the question into a fake chat box, presses Send, delivers one line of judgment, and redirects them to the real AI with the prompt prefilled.
@@ -22,3 +26,7 @@ Open `index.html` in a browser, or deploy the folder to Vercel as-is.
 - The `q` param is capped at 2000 chars and only ever rendered via `textContent` (no HTML injection).
 - Unknown `ai` values fall back to ChatGPT; empty `q` falls back to creator mode.
 - Not affiliated with OpenAI, Anthropic, or anyone with lawyers.
+
+## License
+
+[MIT](LICENSE) — do whatever you want, just don't blame us.
