@@ -51,6 +51,7 @@
   function initCreator() {
     $('creator').hidden = false;
     initHeroDemo();
+    initConsent();
 
     var input = $('prompt-input');
     var charCount = $('char-count');
@@ -253,6 +254,29 @@
     }
 
     loop();
+  }
+
+  // Cookie consent (Google Consent Mode v2). Analytics defaults to denied in
+  // the head snippet; this banner lets the visitor opt in and remembers it.
+  // Shown only on the landing page — playback links honor the stored choice
+  // silently (no banner, so the prank isn't interrupted).
+  function initConsent() {
+    var banner = $('cookie-banner');
+    if (!banner) return;
+    var stored;
+    try { stored = localStorage.getItem('lmcgtfy-consent'); } catch (e) {}
+    if (stored === 'granted' || stored === 'denied') return; // already decided
+    banner.hidden = false;
+
+    function choose(granted) {
+      try { localStorage.setItem('lmcgtfy-consent', granted ? 'granted' : 'denied'); } catch (e) {}
+      if (granted && typeof window.gtag === 'function') {
+        window.gtag('consent', 'update', { analytics_storage: 'granted' });
+      }
+      banner.hidden = true;
+    }
+    $('cookie-accept').addEventListener('click', function () { choose(true); });
+    $('cookie-decline').addEventListener('click', function () { choose(false); });
   }
 
   // Share-URL base: the page's own URL minus query/hash. Preserves subpaths

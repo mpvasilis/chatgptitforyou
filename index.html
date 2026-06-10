@@ -9,6 +9,19 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
+    // Consent Mode v2 — everything denied by default (cookieless) until the
+    // visitor opts in via the banner; honor any previously stored choice.
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied'
+    });
+    try {
+      if (localStorage.getItem('lmcgtfy-consent') === 'granted') {
+        gtag('consent', 'update', { analytics_storage: 'granted' });
+      }
+    } catch (e) {}
     gtag('config', 'G-6Q1SXF8J2K');
   </script>
   <title>Let Me ChatGPT That For You — Send a Link That Asks the AI</title>
@@ -341,6 +354,15 @@
   <noscript>
     <p class="noscript">This thing needs JavaScript. You could ask an AI how to enable it.</p>
   </noscript>
+
+  <!-- Cookie consent (Consent Mode v2) — shown only on the landing page -->
+  <div id="cookie-banner" class="cookie-banner" hidden role="dialog" aria-label="Cookie consent" aria-live="polite">
+    <p class="cookie-text">We use cookies for Google Analytics — just counting visitors, nothing personal. This one's your call, not the AI's.</p>
+    <div class="cookie-actions">
+      <button id="cookie-decline" class="cookie-btn cookie-decline" type="button">Decline</button>
+      <button id="cookie-accept" class="cookie-btn cookie-accept" type="button">Accept</button>
+    </div>
+  </div>
 
   <footer>Not affiliated with OpenAI, Anthropic, or anyone with lawyers.</footer>
 
