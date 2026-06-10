@@ -11,6 +11,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.lmcgtfy.lol/">
   <meta property="og:site_name" content="Let Me ChatGPT That For You">
+  <meta property="og:locale" content="en_US">
   <meta property="og:image" content="https://www.lmcgtfy.lol/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -22,7 +23,27 @@
   <meta name="twitter:image:alt" content="Let Me ChatGPT That For You — a fake AI chat composer typing someone's question">
   <meta name="theme-color" content="#0a0a0f">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E&%23129302;%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
+  <script>
+    // Pre-paint mode switch: on a share link (?q=...) hide the creator
+    // landing before first paint so the playback prank never flashes the
+    // builder UI. Mirrors app.js's q.trim() check; app.js still runs the show.
+    try {
+      var _q = new URLSearchParams(location.search).get('q');
+      if (_q && _q.trim()) document.documentElement.className = 'is-playback';
+    } catch (e) {}
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Let Me ChatGPT That For You",
+    "alternateName": "LMCGTFY",
+    "url": "https://www.lmcgtfy.lol/"
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -75,6 +96,22 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Because you asked them something an AI could have answered instantly. Watch the little demo, take the hint gracefully, and next time type the question into the chatbot yourself."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I send someone a ChatGPT link that asks their question?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Type their question into the box above, pick ChatGPT (or any of the other five AIs), and hit Get Link. You get a shareable link that opens a fake chat, types their question letter by letter, then hands them to the real ChatGPT with the answer already loading. Copy, paste, send, enjoy the silence."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the LMGTFY for AI / ChatGPT?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "LMGTFY — Let Me Google That For You — was the classic sarcastic search link for lazy questions. This is the same idea upgraded for the chatbot era: a let-me-ChatGPT-that-for-you link generator that works with ChatGPT, Claude, Perplexity, Grok, Copilot, and Google AI Mode. Same passive aggression, newer technology."
         }
       }
     ]
@@ -157,27 +194,36 @@
   </svg>
 
   <!-- ============ CREATOR MODE ============ -->
-  <main id="creator" hidden>
+  <main id="creator">
     <header class="hero">
       <h1>Let Me <span class="accent-text">ChatGPT</span> That For You</h1>
       <p class="tagline">For all those people who find it more convenient to ask you than an AI.</p>
 
+      <p class="demo-label">Live preview &mdash; what they&rsquo;ll see</p>
+
       <!-- Decorative looping demo: cycles all 6 AI themes. Never focusable. -->
       <div id="hero-demo" class="hero-demo theme-chatgpt" aria-hidden="true">
         <div class="demo-window">
-          <div class="demo-greeting">
-            <svg class="demo-logo" focusable="false"><use id="demo-logo-use" href="#logo-chatgpt"></use></svg>
-            <p class="demo-heading" id="demo-heading">What can I help with?</p>
+          <div class="demo-chrome">
+            <span class="demo-dots"><i></i><i></i><i></i></span>
+            <span class="demo-url" id="demo-url">chatgpt.com</span>
+            <span class="demo-chrome-end"></span>
           </div>
-          <div class="demo-composer" id="demo-composer">
-            <div class="demo-input">
-              <span id="demo-placeholder" class="demo-placeholder">Ask anything</span><span id="demo-typed"></span><span id="demo-caret" class="demo-caret" hidden></span>
+          <div class="demo-body">
+            <div class="demo-greeting">
+              <svg class="demo-logo" focusable="false"><use id="demo-logo-use" href="#logo-chatgpt"></use></svg>
+              <p class="demo-heading" id="demo-heading">What can I help with?</p>
             </div>
-            <span class="demo-send" id="demo-send">
-              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
-            </span>
+            <div class="demo-composer" id="demo-composer">
+              <div class="demo-input">
+                <span id="demo-placeholder" class="demo-placeholder">Ask anything</span><span id="demo-typed"></span><span id="demo-caret" class="demo-caret" hidden></span>
+              </div>
+              <span class="demo-send" id="demo-send">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+              </span>
+            </div>
+            <div class="demo-overlay" id="demo-overlay" hidden><p>See? That wasn&rsquo;t so hard.</p></div>
           </div>
-          <div class="demo-overlay" id="demo-overlay" hidden><p>See? That wasn&rsquo;t so hard.</p></div>
         </div>
       </div>
     </header>
@@ -236,6 +282,14 @@
         <h3>Why did someone send me this link?</h3>
         <p>Because you asked them something an AI could have answered instantly. Watch the little demo, take the hint gracefully, and next time type the question into the chatbot yourself.</p>
       </div>
+      <div class="faq-item">
+        <h3>How do I send someone a ChatGPT link that asks their question?</h3>
+        <p>Type their question into the box above, pick ChatGPT (or any of the other five AIs), and hit Get Link. You get a shareable link that opens a fake chat, types their question letter by letter, then hands them to the real ChatGPT with the answer already loading. Copy, paste, send, enjoy the silence.</p>
+      </div>
+      <div class="faq-item">
+        <h3>What is the LMGTFY for AI / ChatGPT?</h3>
+        <p>LMGTFY — Let Me Google That For You — was the classic sarcastic search link for lazy questions. This is the same idea upgraded for the chatbot era: a let-me-ChatGPT-that-for-you link generator that works with ChatGPT, Claude, Perplexity, Grok, Copilot, and Google AI Mode. Same passive aggression, newer technology.</p>
+      </div>
     </section>
   </main>
 
@@ -282,6 +336,6 @@
 
   <footer>Not affiliated with OpenAI, Anthropic, or anyone with lawyers.</footer>
 
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>

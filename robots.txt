@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /*?q=
 
 Sitemap: https://www.lmcgtfy.lol/sitemap.xml

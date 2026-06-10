@@ -93,8 +93,15 @@
       shareUrl.value = link;
       result.hidden = false;
       // On touch devices skip the auto-focus: it pops the keyboard and (on
-      // iOS) zooms the page; the user will just tap Copy anyway.
-      if (!coarsePointer) {
+      // iOS) zooms the page. Scroll the result into view instead — on small
+      // screens the builder card pushes it below the fold.
+      if (coarsePointer) {
+        result.scrollIntoView({
+          block: 'nearest',
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            ? 'auto' : 'smooth'
+        });
+      } else {
         shareUrl.focus();
         shareUrl.select();
       }
@@ -130,6 +137,16 @@
     if (!root) return;
 
     var THEMES = ['chatgpt', 'claude', 'perplexity', 'grok', 'copilot', 'aimode'];
+    // Fake address-bar domains for the demo chrome — hardcoded constants,
+    // rendered via textContent only (never markup).
+    var DEMO_DOMAINS = {
+      chatgpt: 'chatgpt.com',
+      claude: 'claude.ai',
+      perplexity: 'perplexity.ai',
+      grok: 'grok.com',
+      copilot: 'copilot.microsoft.com',
+      aimode: 'google.com'
+    };
     var DEMO_PROMPTS = [
       'how do I convert a PDF to Word',
       'what time is it in Tokyo right now',
@@ -140,6 +157,7 @@
     ];
 
     var logoUse = $('demo-logo-use');
+    var urlPill = $('demo-url');
     var heading = $('demo-heading');
     var placeholder = $('demo-placeholder');
     var typed = $('demo-typed');
@@ -155,10 +173,12 @@
       logoUse.setAttribute('href', '#logo-' + key);
       heading.textContent = AIS[key].hint;
       placeholder.textContent = AIS[key].placeholder;
+      if (urlPill) urlPill.textContent = DEMO_DOMAINS[key];
     }
 
     function resetFrame() {
       typed.textContent = '';
+      typed.parentNode.scrollLeft = 0;
       caret.hidden = true;
       caret.classList.remove('typing');
       placeholder.hidden = false;
@@ -169,16 +189,8 @@
       overlay.classList.remove('fading');
     }
 
-    // Reduced motion: one static, fully-typed frame. No loop, no flashing.
-    if (window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setTheme(THEMES[0]);
-      placeholder.hidden = true;
-      typed.textContent = DEMO_PROMPTS[0];
-      composer.classList.add('has-text');
-      return;
-    }
-
+    // Reduced-motion users get the demo too — the typing is the content,
+    // not vestibular motion (CSS already stills the caret blink and fades).
     function typeDemo(text) {
       // Wall-clock progress (performance.now()): background tabs clamp
       // timers to ~1Hz, so a tick-counting loop would crawl for minutes
@@ -192,6 +204,10 @@
           var n = Math.min(text.length, Math.ceil(frac * text.length));
           composer.classList.add('has-text');
           typed.textContent = text.slice(0, n); // hardcoded demo strings only
+          // Keep the newest characters (and caret) in view on narrow screens
+          // — programmatic scroll works even on overflow: hidden.
+          var box = typed.parentNode;
+          box.scrollLeft = box.scrollWidth;
           if (n >= text.length) {
             clearInterval(timer);
             caret.classList.remove('typing');
@@ -273,12 +289,10 @@
     var target = ai.url + encodeURIComponent(prompt);
 
     document.title = 'Someone prepared a question for you…';
-    // Playback permutations are infinite and shouldn't be indexed.
-    // robots.txt already disallows /*?q= — this is defense in depth.
-    var robotsMeta = document.createElement('meta');
-    robotsMeta.setAttribute('name', 'robots');
-    robotsMeta.setAttribute('content', 'noindex');
-    document.head.appendChild(robotsMeta);
+    // Playback URLs (?q=...) stay crawlable on purpose: the static
+    // rel=canonical in index.html consolidates every variant (and its
+    // backlinks) into the homepage. No noindex — the two would conflict.
+    $('creator').hidden = true;
     $('playback').hidden = false;
     // key is validated against the static AIS map above, so it is safe to
     // splice into a class name / fragment href. All user text stays in

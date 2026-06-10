@@ -13,6 +13,7 @@
   --accent-glow: rgba(139, 92, 246, 0.35);
   --radius-lg: 20px;
   --radius-md: 12px;
+  --space-section: clamp(36px, 6vh, 52px);
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 }
@@ -51,23 +52,24 @@ main {
   width: 100%;
   max-width: 680px;
   margin: 0 auto;
-  padding: clamp(28px, 6vh, 64px) 20px 36px;
+  padding: clamp(28px, 6vh, 64px) 20px var(--space-section);
   flex: 1;
 }
 
 /* ===================== Creator mode ===================== */
 
-.hero { text-align: center; margin-bottom: 30px; }
+.hero { text-align: center; margin-bottom: var(--space-section); }
 
 .hero h1 {
-  font-size: clamp(1.9rem, 5.5vw, 3rem);
+  font-size: clamp(2.05rem, 6vw, 3.3rem);
   font-weight: 800;
-  letter-spacing: -0.02em;
-  margin: 0 0 12px;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  margin: 0 0 14px;
 }
 
 .accent-text {
-  background: linear-gradient(100deg, var(--accent-bright), #7c8cf8);
+  background: linear-gradient(95deg, #c4b5fd 0%, var(--accent-bright) 40%, #7c8cf8 78%, #818cf8 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -75,10 +77,19 @@ main {
 }
 
 .tagline {
-  color: var(--muted);
-  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+  color: #b3b3cc;
+  font-size: clamp(1rem, 2.6vw, 1.15rem);
   margin: 0 auto;
-  max-width: 46ch;
+  max-width: 50ch;
+}
+
+.demo-label {
+  margin: 30px 0 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
 }
 
 /* ---- hero demo: decorative mini playback stage, loops the 6 themes ----
@@ -90,7 +101,7 @@ main {
 .hero-demo {
   max-width: 520px;
   width: 100%;
-  margin: 26px auto 0;
+  margin: 0 auto;
   text-align: left;
   pointer-events: none;
   -webkit-user-select: none;
@@ -104,9 +115,59 @@ main {
   color: var(--stage-text, var(--text));
   border: 1px solid var(--border-strong);
   border-radius: 18px;
-  padding: 24px 18px 18px;
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.45s ease, color 0.45s ease;
+}
+
+/* fake browser chrome: traffic lights + address pill, skinned by --stage-* */
+.demo-chrome {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, auto) 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--stage-composer-bg, var(--panel-2));
+  border-bottom: 1px solid rgba(127, 127, 127, 0.18);
   transition: background-color 0.45s ease;
+}
+
+.demo-dots {
+  display: flex;
+  gap: 6px;
+  justify-self: start;
+}
+
+.demo-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.demo-dots i:nth-child(1) { background: #ff5f57; }
+.demo-dots i:nth-child(2) { background: #febc2e; }
+.demo-dots i:nth-child(3) { background: #28c840; }
+
+.demo-url {
+  justify-self: center;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--stage-url-bg, var(--stage-bg, var(--bg)));
+  color: var(--stage-muted, var(--muted));
+  border: 1px solid rgba(127, 127, 127, 0.24);
+  transition: background-color 0.45s ease, color 0.45s ease;
+}
+
+.demo-body {
+  position: relative;
+  padding: 22px 18px 18px;
 }
 
 .demo-greeting {
@@ -167,7 +228,7 @@ main {
   border-radius: var(--stage-radius, 14px);
   padding: 6px 8px;
   box-shadow: var(--stage-composer-shadow, none);
-  transition: border-color 0.2s;
+  transition: background-color 0.45s ease, border-color 0.2s ease, box-shadow 0.45s ease;
 }
 
 .demo-composer.focused {
@@ -187,6 +248,14 @@ main {
 }
 
 .demo-placeholder { color: var(--stage-muted, #7d7d99); }
+
+/* every skinned surface tweens together on theme hops */
+.demo-heading,
+.demo-logo,
+.demo-input,
+.demo-placeholder {
+  transition: color 0.45s ease;
+}
 
 .demo-caret {
   display: inline-block;
@@ -209,7 +278,7 @@ main {
   color: var(--stage-send-fg, #fff);
   background: var(--stage-send-bg, linear-gradient(120deg, #7c3aed, #8b5cf6));
   border-radius: var(--stage-send-radius, 50%);
-  transition: transform 0.12s, filter 0.12s;
+  transition: transform 0.12s, filter 0.12s, background-color 0.45s ease, color 0.45s ease;
 }
 
 .demo-send.pressed { transform: scale(0.8); filter: brightness(1.12); }
@@ -326,11 +395,23 @@ main {
 .pill:hover { border-color: var(--border-strong); color: var(--text); }
 .pill:active { transform: scale(0.97); }
 
+/* per-AI brand accent drives both hover and selected states */
+.pill { --pill-accent: var(--accent); }
+.pill[data-ai="chatgpt"]    { --pill-accent: #10a37f; }
+.pill[data-ai="claude"]     { --pill-accent: #d97757; }
+.pill[data-ai="perplexity"] { --pill-accent: #20808d; }
+.pill[data-ai="grok"]       { --pill-accent: #e8e8e8; }
+.pill[data-ai="copilot"]    { --pill-accent: #0078d4; }
+.pill[data-ai="aimode"]     { --pill-accent: #4285f4; }
+
+.pill:hover:not(.selected) { border-color: var(--pill-accent); }
+
 .pill.selected {
   color: #fff;
-  background: rgba(139, 92, 246, 0.18);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent) inset, 0 0 18px rgba(139, 92, 246, 0.18);
+  border-color: var(--pill-accent);
+  box-shadow: 0 0 0 1px var(--pill-accent) inset,
+    0 0 18px color-mix(in srgb, var(--pill-accent) 20%, transparent);
+  background: color-mix(in srgb, var(--pill-accent) 14%, transparent);
 }
 
 .btn-primary {
@@ -348,7 +429,10 @@ main {
   box-shadow: 0 8px 28px rgba(124, 58, 237, 0.35);
 }
 
-.btn-primary:hover { filter: brightness(1.1); }
+.btn-primary:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 10px 36px rgba(124, 58, 237, 0.52);
+}
 .btn-primary:active { transform: translateY(1px) scale(0.995); }
 
 .result {
@@ -398,8 +482,14 @@ main {
 
 .btn-secondary:hover { border-color: var(--accent); background: rgba(139, 92, 246, 0.1); }
 .btn-secondary:active { transform: scale(0.98); }
-.btn-secondary.copied { color: var(--accent-bright); border-color: var(--accent); }
+.btn-secondary.copied {
+  color: var(--accent-bright);
+  border-color: var(--accent);
+  animation: copied-pop 0.32s ease-out;
+}
 .btn-secondary.copy-error { color: #f87171; border-color: #f87171; }
+
+@keyframes copied-pop { 45% { transform: scale(1.07); } }
 
 .pill:focus-visible,
 .btn-primary:focus-visible,
@@ -411,7 +501,7 @@ main {
 
 /* ---- how it works ---- */
 
-.how { margin-top: 28px; }
+.how { margin-top: var(--space-section); }
 
 .how h2,
 .faq h2 {
@@ -441,6 +531,11 @@ main {
   font-size: 0.83rem;
   line-height: 1.45;
   color: var(--muted);
+  transition: border-color 0.2s ease;
+}
+
+.steps li:hover {
+  border-color: var(--border-strong);
 }
 
 .steps strong {
@@ -455,12 +550,39 @@ main {
   .steps { grid-template-columns: 1fr; }
 }
 
+/* ---- entrance: decorative fade-up, gated for reduced-motion users
+   (unlike the demo typing, which is content and always runs) ---- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero, .builder, .how, .faq {
+    animation: fade-up 0.55s ease-out backwards;
+  }
+  .builder { animation-delay: 0.08s; }
+  .how { animation-delay: 0.16s; }
+  .faq { animation-delay: 0.22s; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
 /* ---- FAQ ---- */
 
-.faq { margin-top: 36px; }
+.faq { margin-top: var(--space-section); }
 
-.faq-item { margin: 0 0 18px; }
+.faq-item {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 15px 18px;
+  margin: 0 0 10px;
+  transition: border-color 0.2s ease;
+}
 .faq-item:last-child { margin-bottom: 0; }
+
+.faq-item:hover {
+  border-color: var(--border-strong);
+}
 
 .faq-item h3 {
   font-size: 0.98rem;
@@ -474,9 +596,15 @@ main {
   color: var(--muted);
   font-size: 0.9rem;
   line-height: 1.55;
+  max-width: 62ch;
 }
 
 /* ===================== Playback mode ===================== */
+
+/* Pre-paint guard: the inline head script tags <html> with .is-playback on
+   share links (?q=...) so the creator landing never flashes before app.js
+   swaps modes. */
+html.is-playback #creator { display: none !important; }
 
 #playback {
   display: flex;
@@ -515,6 +643,7 @@ body.playback-stage::before { display: none; }
 
 .theme-claude {
   --stage-bg: #faf9f5;
+  --stage-url-bg: #f0eee6;
   --stage-text: #3d3929;
   --stage-muted: #87867f;
   --stage-composer-bg: #ffffff;
@@ -572,6 +701,7 @@ body.playback-stage::before { display: none; }
 
 .theme-copilot {
   --stage-bg: #f7f3ee;
+  --stage-url-bg: #ece5da;
   --stage-text: #1a1a1a;
   --stage-muted: #6e675c;
   --stage-composer-bg: #ffffff;
@@ -591,6 +721,7 @@ body.playback-stage::before { display: none; }
 
 .theme-aimode {
   --stage-bg: #ffffff;
+  --stage-url-bg: #f1f3f4;
   --stage-text: #1f1f1f;
   --stage-muted: #5f6368;
   --stage-composer-bg: #ffffff;
@@ -898,14 +1029,21 @@ footer {
   z-index: 1;
   margin-top: auto;
   text-align: center;
-  color: #8585a0;
-  font-size: 0.75rem;
-  padding: 20px 16px 24px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
+  padding: 24px 16px 28px;
+  border-top: 1px solid var(--border);
 }
+
+body.playback-stage footer { border-top-color: transparent; }
 
 @media (max-width: 480px) {
   .result-actions { flex-direction: column; }
   .pill { padding: 8px 14px; font-size: 0.85rem; min-height: 44px; }
+  .demo-chrome { padding: 8px 10px; gap: 8px; }
+  .demo-url { padding: 4px 10px; }
+  .demo-body { padding: 18px 14px 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -915,4 +1053,8 @@ footer {
   .demo-caret { animation: none; }
   .demo-overlay { animation: none; transition: none; }
   .demo-window { transition: none; }
+  .demo-chrome, .demo-url { transition: none; }
+  .demo-composer, .demo-heading, .demo-logo, .demo-input,
+  .demo-placeholder, .demo-send { transition: none; }
+  .btn-secondary.copied { animation: none; }
 }
