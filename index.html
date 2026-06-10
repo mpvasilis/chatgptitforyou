@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Let Me ChatGPT That For You — Send a Link That Asks the AI</title>
+  <meta name="description" content="Let me ChatGPT that for you — the LMGTFY for AI. Type their question, pick ChatGPT, Claude, Perplexity, Grok, Copilot or Google AI Mode, and send the link.">
+  <link rel="canonical" href="https://chatgptitforyou.vercel.app/">
+  <meta property="og:title" content="Let Me ChatGPT That For You">
+  <meta property="og:description" content="The LMGTFY for AI. Type their question, pick an AI, send them a link that does the asking for them.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://chatgptitforyou.vercel.app/">
+  <meta property="og:site_name" content="Let Me ChatGPT That For You">
+  <meta property="og:image" content="https://chatgptitforyou.vercel.app/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Let Me ChatGPT That For You — a fake AI chat composer typing someone's question">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Let Me ChatGPT That For You">
+  <meta name="twitter:description" content="The LMGTFY for AI. Type their question, pick an AI, send them a link that does the asking for them.">
+  <meta name="twitter:image" content="https://chatgptitforyou.vercel.app/og.png">
+  <meta name="twitter:image:alt" content="Let Me ChatGPT That For You — a fake AI chat composer typing someone's question">
+  <meta name="theme-color" content="#0a0a0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E&%23129302;%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Let Me ChatGPT That For You",
+    "url": "https://chatgptitforyou.vercel.app/",
+    "description": "Create a shareable link that types someone's question into ChatGPT, Claude, Perplexity, Grok, Copilot, or Google AI Mode for them — the LMGTFY for AI.",
+    "applicationCategory": "EntertainmentApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Let Me ChatGPT That For You?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It's LMGTFY for the AI age. Someone asked you a question an AI could answer in seconds, so you create a link that types it into the AI for them — slowly, theatrically, and with just a hint of judgment."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which AIs are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Six of them: ChatGPT, Claude, Perplexity, Grok, Microsoft Copilot, and Google AI Mode. Your link replays the question in a faithful clone of whichever one you pick, then hands them over to the real thing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Completely free. No account, no sign-up, no premium tier. The only cost is the small dent in your friend's pride."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why did someone send me this link?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Because you asked them something an AI could have answered instantly. Watch the little demo, take the hint gracefully, and next time type the question into the chatbot yourself."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ============ Inline logo sprites (geometric approximations, no external assets) ============ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="copilot-grad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#1b6ef3"/>
+        <stop offset=".4" stop-color="#00b3c6"/>
+        <stop offset=".75" stop-color="#df4ec8"/>
+        <stop offset="1" stop-color="#f7a829"/>
+      </linearGradient>
+
+      <!-- OpenAI-style hexagonal knot: one petal arc repeated 6x -->
+      <symbol id="logo-chatgpt" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3.2a4.1 4.1 0 0 1 4.1 4.1v4.7"/>
+          <path d="M12 3.2a4.1 4.1 0 0 1 4.1 4.1v4.7" transform="rotate(60 12 12)"/>
+          <path d="M12 3.2a4.1 4.1 0 0 1 4.1 4.1v4.7" transform="rotate(120 12 12)"/>
+          <path d="M12 3.2a4.1 4.1 0 0 1 4.1 4.1v4.7" transform="rotate(180 12 12)"/>
+          <path d="M12 3.2a4.1 4.1 0 0 1 4.1 4.1v4.7" transform="rotate(240 12 12)"/>
+          <path d="M12 3.2a4.1 4.1 0 0 1 4.1 4.1v4.7" transform="rotate(300 12 12)"/>
+        </g>
+      </symbol>
+
+      <!-- Claude starburst: 10 tapered rays, alternating long/short -->
+      <symbol id="logo-claude" viewBox="0 0 24 24">
+        <g fill="#d97757">
+          <path d="M11.2 12.5 12 2.4l.8 10.1Z"/>
+          <path d="M11.2 12.5 12 4.3l.8 8.2Z" transform="rotate(36 12 12)"/>
+          <path d="M11.2 12.5 12 2.4l.8 10.1Z" transform="rotate(72 12 12)"/>
+          <path d="M11.2 12.5 12 4.3l.8 8.2Z" transform="rotate(108 12 12)"/>
+          <path d="M11.2 12.5 12 2.4l.8 10.1Z" transform="rotate(144 12 12)"/>
+          <path d="M11.2 12.5 12 4.3l.8 8.2Z" transform="rotate(180 12 12)"/>
+          <path d="M11.2 12.5 12 2.4l.8 10.1Z" transform="rotate(216 12 12)"/>
+          <path d="M11.2 12.5 12 4.3l.8 8.2Z" transform="rotate(252 12 12)"/>
+          <path d="M11.2 12.5 12 2.4l.8 10.1Z" transform="rotate(288 12 12)"/>
+          <path d="M11.2 12.5 12 4.3l.8 8.2Z" transform="rotate(324 12 12)"/>
+        </g>
+      </symbol>
+
+      <!-- Perplexity: angular hourglass knot -->
+      <symbol id="logo-perplexity" viewBox="0 0 24 24">
+        <g fill="none" stroke="#20808d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2.5v19"/>
+          <path d="M5 3v5.5l7 3.5 7-3.5V3"/>
+          <path d="M5 21v-5.5l7-3.5 7 3.5V21"/>
+        </g>
+      </symbol>
+
+      <!-- xAI-style diagonal slash mark -->
+      <symbol id="logo-grok" viewBox="0 0 24 24">
+        <g fill="currentColor">
+          <path d="M17.6 2.5h3.5L8.4 21.5H4.9Z"/>
+          <path d="M4.9 2.5h3.5l4.9 7.4-1.8 2.7Z"/>
+        </g>
+      </symbol>
+
+      <!-- Copilot: two rounded ribbons forming a loop, gradient -->
+      <symbol id="logo-copilot" viewBox="0 0 24 24">
+        <g fill="none" stroke="url(#copilot-grad)" stroke-width="3.2" stroke-linecap="round">
+          <path d="M7.2 4.6h7.2a5.4 5.4 0 0 1 5.4 5.4v.9"/>
+          <path d="M16.8 19.4H9.6a5.4 5.4 0 0 1-5.4-5.4v-.9"/>
+        </g>
+      </symbol>
+
+      <!-- Google AI Mode: 4-point star in the four Google colors -->
+      <symbol id="logo-aimode" viewBox="0 0 24 24">
+        <path fill="#4285f4" d="M12 1C13 6.8 17.2 11 23 12H12Z"/>
+        <path fill="#34a853" d="M23 12C17.2 13 13 17.2 12 23V12Z"/>
+        <path fill="#fbbc05" d="M12 23C11 17.2 6.8 13 1 12H12Z"/>
+        <path fill="#ea4335" d="M1 12C6.8 11 11 6.8 12 1V12Z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- ============ CREATOR MODE ============ -->
+  <main id="creator" hidden>
+    <header class="hero">
+      <h1>Let Me <span class="accent-text">ChatGPT</span> That For You</h1>
+      <p class="tagline">For all those people who find it more convenient to ask you than an AI.</p>
+
+      <!-- Decorative looping demo: cycles all 6 AI themes. Never focusable. -->
+      <div id="hero-demo" class="hero-demo theme-chatgpt" aria-hidden="true">
+        <div class="demo-window">
+          <div class="demo-greeting">
+            <svg class="demo-logo" focusable="false"><use id="demo-logo-use" href="#logo-chatgpt"></use></svg>
+            <p class="demo-heading" id="demo-heading">What can I help with?</p>
+          </div>
+          <div class="demo-composer" id="demo-composer">
+            <div class="demo-input">
+              <span id="demo-placeholder" class="demo-placeholder">Ask anything</span><span id="demo-typed"></span><span id="demo-caret" class="demo-caret" hidden></span>
+            </div>
+            <span class="demo-send" id="demo-send">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+            </span>
+          </div>
+          <div class="demo-overlay" id="demo-overlay" hidden><p>See? That wasn&rsquo;t so hard.</p></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="builder" aria-label="Link builder">
+      <label class="field-label" for="prompt-input">The question they asked you</label>
+      <textarea id="prompt-input" maxlength="2000" rows="4"
+        placeholder="e.g. how do I convert a PDF to Word?" spellcheck="false"></textarea>
+      <div class="char-row"><span id="char-count">0</span>/2000</div>
+
+      <div class="field-label">Send them to</div>
+      <div class="ai-picker" role="radiogroup" aria-label="Pick an AI">
+        <button type="button" class="pill selected" role="radio" aria-checked="true"  data-ai="chatgpt"><svg class="pill-logo" aria-hidden="true" focusable="false"><use href="#logo-chatgpt"></use></svg><span>ChatGPT</span></button>
+        <button type="button" class="pill" role="radio" aria-checked="false" data-ai="claude"><svg class="pill-logo" aria-hidden="true" focusable="false"><use href="#logo-claude"></use></svg><span>Claude</span></button>
+        <button type="button" class="pill" role="radio" aria-checked="false" data-ai="perplexity"><svg class="pill-logo" aria-hidden="true" focusable="false"><use href="#logo-perplexity"></use></svg><span>Perplexity</span></button>
+        <button type="button" class="pill" role="radio" aria-checked="false" data-ai="grok"><svg class="pill-logo" aria-hidden="true" focusable="false"><use href="#logo-grok"></use></svg><span>Grok</span></button>
+        <button type="button" class="pill" role="radio" aria-checked="false" data-ai="copilot"><svg class="pill-logo" aria-hidden="true" focusable="false"><use href="#logo-copilot"></use></svg><span>Copilot</span></button>
+        <button type="button" class="pill" role="radio" aria-checked="false" data-ai="aimode"><svg class="pill-logo" aria-hidden="true" focusable="false"><use href="#logo-aimode"></use></svg><span>Google AI Mode</span></button>
+      </div>
+
+      <button id="generate-btn" class="btn-primary" type="button">Get Link</button>
+
+      <div id="result" class="result" hidden>
+        <input id="share-url" type="text" readonly aria-label="Shareable link">
+        <div class="result-actions">
+          <button id="copy-btn" class="btn-secondary" type="button" aria-live="polite" aria-label="Copy link to clipboard">Copy</button>
+          <button id="preview-btn" class="btn-secondary" type="button" aria-label="Preview the link in a new tab">Preview</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="how" aria-labelledby="how-heading">
+      <h2 id="how-heading">How it works</h2>
+      <ol class="steps">
+        <li><strong>1. Type their question</strong><span>Word for word. Keep the typos — authenticity matters.</span></li>
+        <li><strong>2. Pick an AI</strong><span>Any of the six. That's more effort than they made.</span></li>
+        <li><strong>3. Send them the link</strong><span>It asks the AI for them, slowly, so they can follow along.</span></li>
+      </ol>
+    </section>
+
+    <section class="faq" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Frequently asked questions</h2>
+      <div class="faq-item">
+        <h3>What is Let Me ChatGPT That For You?</h3>
+        <p>It's LMGTFY for the AI age. Someone asked you a question an AI could answer in seconds, so you create a link that types it into the AI for them — slowly, theatrically, and with just a hint of judgment.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Which AIs are supported?</h3>
+        <p>Six of them: ChatGPT, Claude, Perplexity, Grok, Microsoft Copilot, and Google AI Mode. Your link replays the question in a faithful clone of whichever one you pick, then hands them over to the real thing.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Is it free?</h3>
+        <p>Completely free. No account, no sign-up, no premium tier. The only cost is the small dent in your friend's pride.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Why did someone send me this link?</h3>
+        <p>Because you asked them something an AI could have answered instantly. Watch the little demo, take the hint gracefully, and next time type the question into the chatbot yourself.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ PLAYBACK MODE ============ -->
+  <main id="playback" hidden>
+    <a id="skip-link" class="skip" href="#">Skip &rarr;</a>
+    <div class="stage" aria-hidden="true">
+      <div class="stage-greeting">
+        <svg class="stage-logo" aria-hidden="true" focusable="false"><use id="stage-logo-use" href="#logo-chatgpt"></use></svg>
+        <p class="stage-heading" id="chat-hint">What can I help with?</p>
+      </div>
+      <div class="composer" id="composer">
+        <span class="composer-plus" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+        <div class="composer-input" id="composer-input">
+          <span id="placeholder" class="composer-placeholder">Ask anything</span><span id="typed-text"></span><span id="caret" class="caret" hidden></span>
+        </div>
+        <button id="send-btn" class="send-btn" type="button" tabindex="-1" aria-label="Send">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+        </button>
+      </div>
+    </div>
+    <p class="playback-note">Watch closely. This is the hard part.</p>
+  </main>
+
+  <!-- Fake mouse cursor -->
+  <div id="cursor" class="fake-cursor" hidden>
+    <svg width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 2 L5 19 L9.4 15.2 L12 21.2 L14.6 20 L12 14.2 L17.8 13.8 Z"
+            fill="#f4f4f8" stroke="#16161e" stroke-width="1.4" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- Snarky overlay -->
+  <div id="overlay" class="overlay" hidden>
+    <p>See? That wasn&rsquo;t so hard.</p>
+    <p id="dest-url" class="dest-url" hidden></p>
+  </div>
+
+  <noscript>
+    <p class="noscript">This thing needs JavaScript. You could ask an AI how to enable it.</p>
+  </noscript>
+
+  <footer>Not affiliated with OpenAI, Anthropic, or anyone with lawyers.</footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

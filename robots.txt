@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /*?q=
+
+Sitemap: https://chatgptitforyou.vercel.app/sitemap.xml

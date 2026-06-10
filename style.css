@@ -1,0 +1,918 @@
+/* ===== Let Me ChatGPT That For You ===== */
+
+:root {
+  --bg: #0a0a0f;
+  --panel: #14141d;
+  --panel-2: #0e0e15;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text: #ececf4;
+  --muted: #9a9ab2;
+  --accent: #8b5cf6;
+  --accent-bright: #a78bfa;
+  --accent-glow: rgba(139, 92, 246, 0.35);
+  --radius-lg: 20px;
+  --radius-md: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ambient glow */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(600px 360px at 50% -10%, rgba(139, 92, 246, 0.16), transparent 70%),
+    radial-gradient(500px 320px at 85% 110%, rgba(139, 92, 246, 0.08), transparent 70%);
+  z-index: 0;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: clamp(28px, 6vh, 64px) 20px 36px;
+  flex: 1;
+}
+
+/* ===================== Creator mode ===================== */
+
+.hero { text-align: center; margin-bottom: 30px; }
+
+.hero h1 {
+  font-size: clamp(1.9rem, 5.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+
+.accent-text {
+  background: linear-gradient(100deg, var(--accent-bright), #7c8cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--accent-bright);
+}
+
+.tagline {
+  color: var(--muted);
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+  margin: 0 auto;
+  max-width: 46ch;
+}
+
+/* ---- hero demo: decorative mini playback stage, loops the 6 themes ----
+   The .theme-<ai> classes only define --stage-* custom properties, so
+   putting one on the demo container cascades the palette to everything
+   inside. body.playback-stage rules don't apply here — the demo has its
+   own small skin below, reusing the same vars. */
+
+.hero-demo {
+  max-width: 520px;
+  width: 100%;
+  margin: 26px auto 0;
+  text-align: left;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.demo-window {
+  position: relative;
+  overflow: hidden;
+  background: var(--stage-bg, var(--panel));
+  color: var(--stage-text, var(--text));
+  border: 1px solid var(--border-strong);
+  border-radius: 18px;
+  padding: 24px 18px 18px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.45s ease;
+}
+
+.demo-greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 60px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.demo-logo {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  color: var(--stage-text, var(--text));
+}
+
+.demo-heading {
+  margin: 0;
+  font-family: var(--stage-font-heading, var(--font));
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--stage-text, var(--text));
+}
+
+/* per-theme quirks, mirroring the real stage */
+.theme-chatgpt .demo-logo { display: none; }
+
+.theme-claude .demo-greeting,
+.theme-grok .demo-greeting {
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+}
+
+.theme-claude .demo-logo { width: 20px; height: 20px; }
+.theme-claude .demo-heading { font-weight: 500; font-size: 1.15rem; }
+.theme-grok .demo-heading { font-weight: 700; font-size: 1.15rem; }
+
+.theme-aimode .demo-heading {
+  font-weight: 500;
+  background: linear-gradient(90deg, #4285f4, #9b72cb, #d96570);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.demo-composer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--stage-composer-bg, var(--panel-2));
+  border: 1px solid var(--stage-composer-border, var(--border));
+  border-radius: var(--stage-radius, 14px);
+  padding: 6px 8px;
+  box-shadow: var(--stage-composer-shadow, none);
+  transition: border-color 0.2s;
+}
+
+.demo-composer.focused {
+  border-color: var(--stage-focus-border, var(--accent));
+}
+
+.demo-input {
+  flex: 1;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--stage-text, var(--text));
+}
+
+.demo-placeholder { color: var(--stage-muted, #7d7d99); }
+
+.demo-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 1px;
+  flex: none;
+  background: var(--stage-text, var(--text));
+  animation: blink 1s steps(1, end) infinite;
+}
+
+.demo-caret.typing { animation: none; opacity: 1; }
+
+.demo-send {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  color: var(--stage-send-fg, #fff);
+  background: var(--stage-send-bg, linear-gradient(120deg, #7c3aed, #8b5cf6));
+  border-radius: var(--stage-send-radius, 50%);
+  transition: transform 0.12s, filter 0.12s;
+}
+
+.demo-send.pressed { transform: scale(0.8); filter: brightness(1.12); }
+
+.theme-chatgpt .demo-send { visibility: hidden; }
+.theme-chatgpt .demo-composer.has-text .demo-send { visibility: visible; }
+
+.demo-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: var(--stage-overlay-bg, rgba(6, 6, 10, 0.82));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fade-in 0.3s ease-out;
+  transition: opacity 0.3s ease;
+}
+
+.demo-overlay.fading { opacity: 0; }
+
+.demo-overlay p {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: var(--stage-text, var(--text));
+}
+
+.builder {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px, 4vw, 32px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.field-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+#prompt-input {
+  width: 100%;
+  resize: vertical;
+  min-height: 110px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+  padding: 14px 16px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+#prompt-input::placeholder { color: #7d7d99; }
+
+#prompt-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+#prompt-input.error {
+  border-color: #f87171;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.25);
+}
+
+.char-row {
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 6px 2px 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ai-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 26px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s, transform 0.1s;
+}
+
+.pill-logo {
+  width: 17px;
+  height: 17px;
+  flex: none;
+}
+
+.pill:hover { border-color: var(--border-strong); color: var(--text); }
+.pill:active { transform: scale(0.97); }
+
+.pill.selected {
+  color: #fff;
+  background: rgba(139, 92, 246, 0.18);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent) inset, 0 0 18px rgba(139, 92, 246, 0.18);
+}
+
+.btn-primary {
+  width: 100%;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(120deg, #7c3aed, #8b5cf6 55%, #6d6df0);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 15px 24px;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 8px 28px rgba(124, 58, 237, 0.35);
+}
+
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-primary:active { transform: translateY(1px) scale(0.995); }
+
+.result {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#share-url {
+  width: 100%;
+  font: inherit;
+  font-size: 1rem; /* 16px minimum stops iOS Safari focus auto-zoom */
+  color: var(--accent-bright);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#share-url:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.result-actions { display: flex; gap: 10px; }
+
+.btn-secondary {
+  flex: 1;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 11px 18px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+
+.btn-secondary:hover { border-color: var(--accent); background: rgba(139, 92, 246, 0.1); }
+.btn-secondary:active { transform: scale(0.98); }
+.btn-secondary.copied { color: var(--accent-bright); border-color: var(--accent); }
+.btn-secondary.copy-error { color: #f87171; border-color: #f87171; }
+
+.pill:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.skip:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 2px;
+}
+
+/* ---- how it works ---- */
+
+.how { margin-top: 28px; }
+
+.how h2,
+.faq h2 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.steps li {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 13px 15px;
+  font-size: 0.83rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.steps strong {
+  display: block;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+@media (max-width: 560px) {
+  .steps { grid-template-columns: 1fr; }
+}
+
+/* ---- FAQ ---- */
+
+.faq { margin-top: 36px; }
+
+.faq-item { margin: 0 0 18px; }
+.faq-item:last-child { margin-bottom: 0; }
+
+.faq-item h3 {
+  font-size: 0.98rem;
+  font-weight: 600;
+  margin: 0 0 5px;
+  color: var(--text);
+}
+
+.faq-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+/* ===================== Playback mode ===================== */
+
+#playback {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ---- per-AI stage themes (applied to <body> in playback only) ---- */
+
+body.playback-stage {
+  background: var(--stage-bg);
+  color: var(--stage-text);
+}
+
+/* kill the violet ambient glow on themed stages */
+body.playback-stage::before { display: none; }
+
+.theme-chatgpt {
+  --stage-bg: #212121;
+  --stage-text: #ececec;
+  --stage-muted: #b0b0b0;
+  --stage-composer-bg: #303030;
+  --stage-composer-border: transparent;
+  --stage-radius: 28px;
+  --stage-accent: #ffffff;
+  --stage-font-heading: var(--font);
+  --stage-focus-border: #4a4a4a;
+  --stage-composer-shadow: none;
+  --stage-send-bg: #ffffff;
+  --stage-send-fg: #0d0d0d;
+  --stage-send-radius: 50%;
+  --stage-overlay-bg: rgba(13, 13, 13, 0.85);
+  --cursor-fill: #f4f4f8;
+  --cursor-stroke: #16161e;
+}
+
+.theme-claude {
+  --stage-bg: #faf9f5;
+  --stage-text: #3d3929;
+  --stage-muted: #87867f;
+  --stage-composer-bg: #ffffff;
+  --stage-composer-border: #e8e6dc;
+  --stage-radius: 16px;
+  --stage-accent: #d97757;
+  --stage-font-heading: Georgia, "Times New Roman", Times, serif;
+  --stage-focus-border: #d1cfc2;
+  --stage-composer-shadow: 0 4px 16px rgba(61, 57, 41, 0.07);
+  --stage-send-bg: #d97757;
+  --stage-send-fg: #ffffff;
+  --stage-send-radius: 10px;
+  --stage-overlay-bg: rgba(250, 249, 245, 0.9);
+  --cursor-fill: #2d2a20;
+  --cursor-stroke: #ffffff;
+}
+
+.theme-perplexity {
+  --stage-bg: #191a1a;
+  --stage-text: #e8e8e6;
+  --stage-muted: #8d9494;
+  --stage-composer-bg: #202222;
+  --stage-composer-border: #2d2f2f;
+  --stage-radius: 12px;
+  --stage-accent: #20808d;
+  --stage-font-heading: Georgia, "Times New Roman", serif;
+  --stage-focus-border: #20808d;
+  --stage-composer-shadow: none;
+  --stage-send-bg: #20808d;
+  --stage-send-fg: #ffffff;
+  --stage-send-radius: 50%;
+  --stage-overlay-bg: rgba(16, 17, 17, 0.85);
+  --cursor-fill: #f4f4f8;
+  --cursor-stroke: #16161e;
+}
+
+.theme-grok {
+  --stage-bg: #000000;
+  --stage-text: #ffffff;
+  --stage-muted: #8a8a8a;
+  --stage-composer-bg: #141414;
+  --stage-composer-border: #2a2a2a;
+  --stage-radius: 24px;
+  --stage-accent: #ffffff;
+  --stage-font-heading: var(--font);
+  --stage-focus-border: #444444;
+  --stage-composer-shadow: none;
+  --stage-send-bg: #ffffff;
+  --stage-send-fg: #000000;
+  --stage-send-radius: 50%;
+  --stage-overlay-bg: rgba(0, 0, 0, 0.85);
+  --cursor-fill: #f4f4f8;
+  --cursor-stroke: #16161e;
+}
+
+.theme-copilot {
+  --stage-bg: #f7f3ee;
+  --stage-text: #1a1a1a;
+  --stage-muted: #6e675c;
+  --stage-composer-bg: #ffffff;
+  --stage-composer-border: #e3ddd3;
+  --stage-radius: 24px;
+  --stage-accent: #0078d4;
+  --stage-font-heading: var(--font);
+  --stage-focus-border: #cfc7b9;
+  --stage-composer-shadow: 0 2px 10px rgba(26, 26, 26, 0.05);
+  --stage-send-bg: linear-gradient(135deg, #0078d4, #8b5cf6);
+  --stage-send-fg: #ffffff;
+  --stage-send-radius: 50%;
+  --stage-overlay-bg: rgba(247, 243, 238, 0.9);
+  --cursor-fill: #2a2622;
+  --cursor-stroke: #ffffff;
+}
+
+.theme-aimode {
+  --stage-bg: #ffffff;
+  --stage-text: #1f1f1f;
+  --stage-muted: #5f6368;
+  --stage-composer-bg: #ffffff;
+  --stage-composer-border: #e8eaed;
+  --stage-radius: 28px;
+  --stage-accent: #4285f4;
+  --stage-font-heading: var(--font);
+  --stage-focus-border: #dfe1e5;
+  --stage-composer-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --stage-send-bg: #4285f4;
+  --stage-send-fg: #ffffff;
+  --stage-send-radius: 50%;
+  --stage-overlay-bg: rgba(255, 255, 255, 0.9);
+  --cursor-fill: #1f1f1f;
+  --cursor-stroke: #ffffff;
+}
+
+/* ---- skip link (adapts to light stages) ---- */
+
+.skip {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  z-index: 60;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.skip:hover {
+  color: var(--accent-bright);
+  background: rgba(139, 92, 246, 0.1);
+  border-color: var(--accent);
+}
+
+body.playback-stage .skip {
+  /* stage ink, not muted — --stage-muted fails WCAG AA contrast on the
+     light Claude composer background */
+  color: var(--stage-text);
+  background: var(--stage-composer-bg);
+  border-color: var(--stage-composer-border);
+  box-shadow: var(--stage-composer-shadow);
+}
+
+body.playback-stage .skip:hover {
+  color: var(--stage-text);
+  border-color: var(--stage-accent);
+}
+
+body.playback-stage .skip:focus-visible {
+  outline-color: var(--stage-accent);
+}
+
+/* ---- stage: greeting + composer, the fake new-chat screen ---- */
+
+.stage-greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.stage-logo {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  color: var(--stage-text, var(--text));
+}
+
+.stage-heading {
+  margin: 0;
+  font-family: var(--stage-font-heading, var(--font));
+  font-size: clamp(1.5rem, 4.5vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--stage-text, var(--text));
+}
+
+/* ChatGPT: the real new-chat screen has no logo above the greeting */
+.theme-chatgpt .stage-logo { display: none; }
+
+/* Claude & Grok: logo sits beside the heading */
+.theme-claude .stage-greeting,
+.theme-grok .stage-greeting {
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
+}
+
+.theme-claude .stage-logo { width: 30px; height: 30px; }
+.theme-claude .stage-heading {
+  font-weight: 500;
+  font-size: clamp(1.8rem, 5vw, 2.3rem);
+  letter-spacing: -0.015em;
+}
+
+.theme-grok .stage-logo { width: 38px; height: 38px; }
+.theme-grok .stage-heading {
+  font-weight: 700;
+  font-size: clamp(1.9rem, 5.5vw, 2.4rem);
+}
+
+/* Perplexity: lowercase serif-style wordmark under the logo */
+.theme-perplexity .stage-heading {
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  font-size: clamp(1.7rem, 5vw, 2.1rem);
+}
+
+.theme-aimode .stage-heading {
+  font-weight: 500;
+  /* Gemini-family gradient wordmark; color stays as fallback */
+  background: linear-gradient(90deg, #4285f4, #9b72cb, #d96570);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- composer ---- */
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  background: var(--stage-composer-bg, var(--panel-2));
+  border: 1px solid var(--stage-composer-border, var(--border));
+  border-radius: var(--stage-radius, 14px);
+  padding: 8px 10px;
+  box-shadow: var(--stage-composer-shadow, none);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.composer.focused {
+  border-color: var(--stage-focus-border, var(--stage-accent, var(--accent)));
+}
+
+/* the little "+" on the left — ChatGPT theme only */
+.composer-plus { display: none; }
+
+.theme-chatgpt .composer-plus {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 4px;
+  flex: none;
+  border-radius: 50%;
+  color: var(--stage-muted);
+}
+
+.composer-input {
+  flex: 1;
+  min-height: 44px;
+  max-height: 38vh;
+  overflow-y: auto;
+  background: transparent;
+  border: none;
+  padding: 10px 8px;
+  font-size: 1rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--stage-text, var(--text));
+}
+
+.composer-placeholder { color: var(--stage-muted, #7d7d99); }
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.15em;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  background: var(--accent-bright);
+  animation: blink 1s steps(1, end) infinite;
+}
+
+/* caret matches the stage ink so it shows on light themes too */
+body.playback-stage .caret { background: var(--stage-text); }
+
+/* real carets stay solid while characters are being typed */
+.caret.typing { animation: none; opacity: 1; }
+
+@keyframes blink { 50% { opacity: 0; } }
+
+.send-btn {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  color: var(--stage-send-fg, #fff);
+  background: var(--stage-send-bg, linear-gradient(120deg, #7c3aed, #8b5cf6));
+  border: none;
+  border-radius: var(--stage-send-radius, 50%);
+  cursor: default;
+  transition: transform 0.12s, filter 0.12s, box-shadow 0.12s;
+}
+
+.send-btn.pressed {
+  transform: scale(0.82);
+  filter: brightness(1.12);
+}
+
+/* ChatGPT only: the white send circle appears once text exists
+   (the real empty composer shows voice controls instead) */
+.theme-chatgpt .send-btn { visibility: hidden; }
+.theme-chatgpt .composer.has-text .send-btn { visibility: visible; }
+
+.playback-note {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 18px;
+}
+
+body.playback-stage .playback-note { color: var(--stage-muted); }
+
+body.playback-stage footer { color: var(--stage-muted); }
+
+/* ===== fake cursor ===== */
+
+.fake-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 80;
+  pointer-events: none;
+  transform: translate(-80px, -80px);
+  transition: transform 0.75s cubic-bezier(0.45, 0.05, 0.2, 1);
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.65));
+}
+
+/* themed cursor ink: dark arrow on light stages */
+.fake-cursor path {
+  fill: var(--cursor-fill, #f4f4f8);
+  stroke: var(--cursor-stroke, #16161e);
+}
+
+.theme-claude .fake-cursor,
+.theme-copilot .fake-cursor,
+.theme-aimode .fake-cursor {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.28));
+}
+
+/* ===== overlay ===== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  padding: 24px;
+  background: var(--stage-overlay-bg, rgba(6, 6, 10, 0.82));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fade-in 0.3s ease-out;
+}
+
+.overlay p {
+  font-size: clamp(1.4rem, 4.5vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-align: center;
+  margin: 0;
+  animation: rise 0.35s ease-out;
+}
+
+/* would-be destination, shown only with ?noredirect=1 */
+.overlay .dest-url {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--stage-muted, var(--muted));
+  word-break: break-all;
+  max-width: min(82ch, 88vw);
+}
+
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+
+/* ===================== shared ===================== */
+
+[hidden] { display: none !important; }
+
+.noscript {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: var(--muted);
+  padding: 40px 20px;
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  text-align: center;
+  color: #8585a0;
+  font-size: 0.75rem;
+  padding: 20px 16px 24px;
+}
+
+@media (max-width: 480px) {
+  .result-actions { flex-direction: column; }
+  .pill { padding: 8px 14px; font-size: 0.85rem; min-height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fake-cursor { transition: none; }
+  .caret { animation: none; }
+  .overlay, .overlay p { animation: none; }
+  .demo-caret { animation: none; }
+  .demo-overlay { animation: none; transition: none; }
+  .demo-window { transition: none; }
+}
